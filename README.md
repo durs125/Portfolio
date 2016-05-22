@@ -14,7 +14,7 @@ All software contained in this repository is Copyright David Infortunio. Please 
 ###VBA
 5. BACT_Data_Base5.accdb: A Microsoft Access Database that was written for the TCEQ and contains large amounts of VBA code.
 
-###run_analysis.R
+##run_analysis.R
 The purpose of this code is to take information from website https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip
 and look at the mean for every subject (there are 30 test subjects) for each of the 6 activities. 
 
@@ -33,8 +33,8 @@ The test data and the training data are then merged into one dataframe. This inv
 
 The columns that relate to the mean and standard deviation are then extracted with perl regular expressions and the grepl function.
 
-#A table containing all the data is named bigtable.txt,
+###A table containing all the data is named bigtable.txt,
 
-# a table with just the means of the means and standard deviations, grouped by person and activity is called smalltable.txt .
+### a table with just the means of the means and standard deviations, grouped by person and activity is called smalltable.txt .
 
 
