@@ -1,0 +1,137 @@
+#	##Need packages Stringr
+# Input phrases as x<-c("phrase1", "phrase2")
+
+#All software contained in this repository is Copyright David Infortunio. Please contact before using this code 512-228-4838:
+library(stringr)
+
+#	
+
+setwd("C:\\wordpuzzel")
+
+
+
+
+
+zzz<-scan(file="quotesPermuted.txt", what=character(),sep="\n")
+#zzz<-scan(file="quotes.txt", what=character(),sep="\n")
+zzzz<-zzz[str_length(zzz)>4]
+zzzz<- zzzz[order(str_length(zzzz))]
+##put rest of code here
+
+
+
+
+
+
+# remove this!
+#zzzz<-zzzz[1:3]
+
+
+
+
+
+
+#	##Need packages Stringr
+#  
+nosequence <- function(block){
+	x<-sample(1:block,block)
+	for (i in x){
+		if(!is.na(x[i+1])){
+			 if(x[i]==x[i+1]-1){
+ spa<-x[i]
+				 x[i]<-x[i+1]
+				 x[i+1]<-spa
+	}}}
+	return(x)
+}
+
+#	#functions
+	permute<-function(phrase, block,funcs){
+
+		phrase <-str_trim(phrase,)
+		
+
+
+
+		phr <-str_length(phrase)
+
+
+		phrase2 <-str_split_fixed(phrase,"",phr+1)
+
+
+
+		phrase2<-phrase2[1:phr+1]
+
+		
+
+	
+	
+
+		perm<-nosequence( block )
+	
+		modd<-phr%%block
+		phrase3<-c(phrase2,sample(c('a','e','i','o','u','r','t','s'),block-modd))
+
+
+		mo<-block*(0:((length(phrase3)/block)-1))
+
+		moo<-matrix(rep(mo,block),block,byrow=TRUE)
+
+		phrase4<-phrase3
+
+		phrase4[1:length(phrase3)]<-phrase3[as.vector( perm +moo)]	
+
+
+
+
+#str_split_fixed(a,"",24)
+
+		cat("Solve the below Permutation Cypher: \n ")
+		cat(phrase4,sep="")
+		cat("\n")
+
+		vv<-as.character(paste(phrase4, sep=''))
+
+
+		return(as.vector(vv))
+
+}
+
+
+
+
+
+
+#Scramble puzels
+
+
+#sample(1:x,x) gives random ordered vector of size x
+
+
+
+#to order the phrases xx[order(str_length(xx))]
+
+#str_trim(xx)
+
+	permute_phrases<-function( phrases , block_size){
+	
+	x<-apply(as.matrix( phrases ), 1, permute, block_size, sam)
+
+	ll<-1:length(x)
+
+	for(i in 1: length ( x )){
+		ll[i]<-paste(x [[i]], collapse="")
+	}
+
+	return(ll)
+}
+
+
+
+
+xx<- zzzz[2:length(zzzz)]
+block_size<-as.numeric(zzz[1])
+home<-permute_phrases(xx, block_size)
+
+#paste0(home, collapse="")
+

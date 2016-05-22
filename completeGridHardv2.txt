@@ -1,0 +1,275 @@
+# simplex {boot} to solve linear optimization. Need package boot
+#Need package linprog
+
+#All software contained in this repository is Copyright David Infortunio. Please contact before using this code 512-228-4838:
+setwd("C:\\wordpuzzel")
+
+for(iii in 1:10){
+
+# font 9
+
+ par(mar=c(5, 4, 4, 2) + 0.1,ann=FALSE, font=9)
+ plot(c(0,4),c(0,4), xlab="",ylab="", col=" white",ann=FALSE)
+ points(c(1,2,1,2,3,1,2,0,0,1,2,3,2,3),c(1,2,3,2,1,2,1,1,2,0,0,3,3,2),pch=2,col="blue"  )
+ 
+# using tk_ before a function creates an interactive version of the comand
+#cha.dir() to chage
+
+ lines(c(0.15,2,2,0,0) ,c(0,0,2,2,2))
+ lines(c(3,3,1) ,c(1,3,3))
+ lines(c(0,3) ,c(1,1))
+ lines(c(1,1) ,c(0,3))
+ lines(c(2,2,3) ,c(3,2,2))
+ lines(c(1,3) ,c(0,2))
+# 
+lines(c(0.05,3) ,c(0.05,3))
+ lines(c(0,2) ,c(1,3))
+# 
+lines(c(0,0,1),c(0.05,2,3))
+ lines(c(2,3) ,c(0,1))
+
+
+ 
+ P<-2
+ P[1:9]<-0:2
+ Q<-c(0,0,0,1,1,1,2,2,2)
+ N<-c(0,0,1,1,1,2,2,3,3,2)
+ M<-c(0,1,2,0,1,2,1,2,1,0)
+
+
+
+					# this determines the difficulty
+ vars<-matrix(data= sample (rep(c(1:2,4:9),10)),nrow=6,ncol=12)
+
+
+ran<-sample (rep(7:17,3))
+
+
+
+
+ vars[1,8]<-ran[1]
+ vars[3,1]<-ran[2]
+ 
+
+ vars[1,1]<-ran[3]
+ vars[3,9]<-ran[4]
+
+vars[2,1]<-ran[5]
+vars[2,8]<-ran[6]
+
+
+
+
+
+ 
+  # Number up
+text(.05+N,M+0.5,paste("/",as.character(vars[1,1:10]),sep=""),pos=4)
+ 
+ #number down
+ #text(N[2:10]-.1,M[2:10]+0.5,as.character(vars[2,1:9]))
+ 
+ #number right
+ text(M[1:10]+.5,N[1:10]+0.1,paste("       /",as.character(vars[2,1:10]),sep=""))
+ 
+ #number left
+ #text(M[1:10]+.5,N[1:10]-0.1,as.character(vars[4,1:10]))
+ 
+ #diagonal up
+ text(P+.7,Q+0.7,paste("/",as.character(vars[3,1:9]),sep=""), pos=2)
+
+#Text
+text(3.2,3.2,"Finish")
+ text(0,0, "Start" )
+ 
+
+ #diagonal down
+ #text(P[2:7]+.6,Q[2:7]+0.4,as.character(vars[6,1:6]))
+ 
+ S<-2
+ S[1:7]<-0:2
+
+ S[7]<-1
+ Z<-c(0,1,2)
+ Y<-rep(0:3,3)
+ Y<-c(0,0,0,1,1,1,2,2,2)
+ 
+ #arrow right
+ #arrows(S+.6,T+.1,S+.8,T+.1,length=.05)
+ #arrows(T+.17,S+.2,T+.17,S+.8,length=.05)
+ 
+ #arrow left
+# arrows(S+.4,T-.05,S+.2,T-.05,length=.05)
+ #arrows(T-.05,S+.7,T-.05,S+.2,length=.05)
+ 
+ 
+ #arrow diagonal down
+ #arrows(Z[2:7]+.6,Y[2:7]+.49,Z[2:7]+.4,Y[2:7]+.28,length=.05)
+ 
+ #arrow diagonal down
+ #arrows(Z+.6,Y+.48,Z+.4,Y+.28,length=.05)
+ 
+ 
+ #arrow diagonal up
+ arrows(Z+.48,Y+.55,Z+.65,Y+.72,length=.05, code=3)
+
+filen<-paste("GPuzzle", "Hard", iii)
+
+savePlot(filen,"jpeg")
+
+
+comment(" #every thing is going up and to the right. Start at the node in question.Up and right are negative. Down and left are positive.")
+
+
+comment("A function that I pass two vectors to. The first #vector is a list of things that are not zero and the #second is their value")
+
+
+
+vecA<-function(x,y){
+shortt<-rep(0,30)
+shortt[x]<-y
+return (shortt)
+}
+
+A1<-diag(1,30,30)
+A3<-matrix(0,16,30)
+# top row
+
+# reserved for the start node
+#A3[1,]<-vecA(c(3,9,27),c(1,-1,1))
+
+A3[2,]<-vecA(c(3,19,27),c(1,-1,1))
+
+A3[3,]<-vecA(c(6,19,28,18),c(1,1,1,-1))
+
+# reserved for the finish node
+#A3[4,]<-vecA(c(),c(1,-1,1))
+
+
+		# second row
+
+A3[5,]<-vecA(c(2,20,27),c(1,-1,-1))
+
+A3[6,]<-vecA(c(5,20,24,3,17,28),c(1,1,1,-1,-1,-1))
+
+A3[7,]<-vecA(c(17,7,25,6,29,16),c(1,1,1,-1,-1,-1))
+
+		#third row
+
+A3[8,]<-vecA(c(16,26,9,8),c(1,1,1,-1))
+
+A3[9,]<-vecA(c(1,2,14,24),c(1,-1,-1,-1))
+
+A3[10,]<-vecA(c(4,14,21,5,15,25),c(1,1,1,-1,-1,-1))
+
+A3[11,]<-vecA(c(10,15,22,7,13,26),c(1,1,1,-1,-1,-1))
+
+A3[12,]<-vecA(c(23,13,9),c(1,1,-1))
+
+		#fourth row
+
+#reserved for the starting square
+#A3[13,]<-vecA(c(3,9,27),c(1,-1,1))
+
+A3[14,]<-vecA(c(11,4,12,22),c(1,-1,-1,-1))
+
+A3[15,]<-vecA(c(12,10,23),c(1,-1,-1))
+
+#reserved conner
+#A3[16,]<-vecA(c(3,9,27),c(1,-1,1))
+
+
+
+
+
+
+
+x<-1:10
+b1<-rep(c(vars[1,x],vars[2,x],vars[3,x]),1)
+A4<-rbind(A1,A1,A3)
+b1[30]<-0
+b2<-b1
+b3<-rep(0,16)
+
+
+	#bvec
+b4<-c(b1,-b2,b3)
+
+
+	#const.dir
+d1<-c(rep("<=",30),rep(">=",30),rep("==",16))
+
+#vars<-matrix(data=1:72,nrow=6,ncol=12)
+
+
+	#cvec
+a<-vecA(c(8,18,29),c(1,1,1))
+
+
+simp<-solveLP(a,b4,A4,maximum=TRUE,const.dir=d1,lpSolve=TRUE)
+simpl<-simp[[3]]
+
+vars2<-matrix(simpl[1:30],3,10,byrow= TRUE)
+
+
+#vars2[vars2<=0]<-NA
+
+
+ par(mar=c(5, 4, 4, 2) + 0.1,ann=FALSE, font=9)
+ plot(c(0,4),c(0,4), xlab="",ylab="", col=" white",ann=FALSE)
+ points(c(1,2,1,2,3,1,2,0,0,1,2,3,2,3),c(1,2,3,2,1,2,1,1,2,0,0,3,3,2),pch=2,col="blue"  )
+ # Number up
+text(.05+N,M+0.5,paste("/",as.character(vars[1,1:10]),sep=""),pos=4)
+ 
+ #number down
+ #text(N[2:10]-.1,M[2:10]+0.5,as.character(vars[2,1:9]))
+ 
+ #number right
+ text(M[1:10]+.5,N[1:10]+0.1,paste("       /",as.character(vars[2,1:10]),sep=""))
+ 
+ #number left
+ #text(M[1:10]+.5,N[1:10]-0.1,as.character(vars[4,1:10]))
+ 
+ #diagonal up
+ text(P+.7,Q+0.7,paste("/",as.character(vars[3,1:9]),sep=""), pos=2)
+
+ 
+# using tk_ before a function creates an interactive version of the comand
+#cha.dir() to chage
+
+ lines(c(0.15,2,2,0,0) ,c(0,0,2,2,2))
+ lines(c(3,3,1) ,c(1,3,3))
+ lines(c(0,3) ,c(1,1))
+ lines(c(1,1) ,c(0,3))
+ lines(c(2,2,3) ,c(3,2,2))
+ lines(c(1,3) ,c(0,2))
+# 
+lines(c(0.05,3) ,c(0.05,3))
+ lines(c(0,2) ,c(1,3))
+# 
+lines(c(0,0,1),c(0.05,2,3))
+ lines(c(2,3) ,c(0,1))
+
+
+text(3.2,3.2,"Finish")
+ text(0,0, "Start" )
+  # Number up
+ text(.072+N,M+0.5,as.character(vars2[1,1:10]))
+ 
+
+ 
+ #number right
+ text(M[1:10]+.45,N[1:10]+0.1,as.character(vars2[2,1:10]))
+ 
+
+ 
+ #diagonal up
+ text(P+.55,Q+0.7,as.character(vars2[3,1:9]),pos=2)
+
+#solution
+sol<-paste(" Solution ", as.character(simp[4]), "make it to their destination")
+text(2.5,3.5,sol)
+
+filem<-paste("GSolution", "Hard", iii  )
+
+savePlot(filem,"jpeg")
+}
